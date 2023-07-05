@@ -1,18 +1,25 @@
-from turtle import Turtle
-from bullet import Bullet
+from turtle import Turtle, Screen
+
+def create_custom_shape(image_path):
+    screen = Screen()
+    screen.register_shape(image_path)
+    return image_path
 
 class Enemy(Turtle):
-    def __init__(self, position):
+    def __init__(self, position, image_path):
         super().__init__()
-        self.shape('turtle')
+        self.hideturtle()
+        self.shape(create_custom_shape(image_path))
         self.color('blue')
         self.shapesize(stretch_wid=1, stretch_len=1)
         self.penup()
-        self.goto(position)
         self.speed(0)
+        self.goto(position)
         self.setheading(270)
-        self.x_move = 5
+        self.x_move = 1
         self.y_move = 0
+        self.state = 'ready'
+        self.showturtle()
 
     def move(self):
         new_x = self.xcor() + self.x_move
@@ -21,10 +28,6 @@ class Enemy(Turtle):
 
     def bounce_x(self):
         self.x_move *= -1
-
-    def fire(self):
-        bullet = Bullet((self.xcor(), self.ycor() - 20), 'yellow')
-        bullet.move()
 
     def reset(self):
         self.hideturtle()
